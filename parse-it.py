@@ -51,11 +51,16 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-def write_file(directory):
-    parsed = parse_folder_name(directory)
+def process_folder(args, directory):
+    abs_path = os.path.abspath(args.folder)
+    abs_path_d = os.path.join(abs_path, directory)
+    print(abs_path_d)
+    parsed = parse_folder_name(abs_path_d)
     print('Project: {}'.format(parsed['Project']))
+    print('Node: {}'.format(parsed['Node']))
+
     xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
-    xml_file = os.path.join(directory, xml_orig)
+    xml_file = os.path.join(abs_path_d, xml_orig)
 
     if os.path.isfile(xml_file):
         tree = xml.ElementTree(file=xml_file)
@@ -74,30 +79,37 @@ def write_file(directory):
                 should_we_append = False
 
         if should_we_append:
-            print('Updating: {}'.format(xml_file))
             appSettings.append(log)
             appSettings.append(log2)
             tree = xml.ElementTree(root)
             indent(root)
-            tree.write(xml_file, xml_declaration=True)
+            if(args.write):
+                print('\nUpdating: {}\n'.format(xml_file))
+                tree.write(xml_file, xml_declaration=True)
+            else:
+                print()
+                xml.dump(log)
+                xml.dump(log2)
         else:
-            print('Skipping: {}'.format(xml_file))
+            print('\nSkipping: {}\n'.format(xml_file))
     else:
-        print('FAIL:: {} doesnt exists'.format(xml_file))
+        print('\nFAIL:: {} doesnt exist\n'.format(xml_file))
+
+    print('#'*30 + '\n')
+
+def print_to_screen(directory):
+    parsed = parse_folder_name(directory)
+    print('Project: {}'.format(parsed['Project']))
+    print('Node: {}'.format(parsed['Node']))
+
+    print()
 
 def main(args):
     abs_path = os.path.abspath(args.folder)
 
     dirs = get_dirs(abs_path)
     for d in dirs:
-
-        # pretty_print(parsed_folder)
-        abs_path_d = os.path.join(abs_path, d)
-
-        if(args.write):
-            write_file(abs_path_d)
-
-
+        process_folder(args, d)
 
 
 if __name__ == '__main__':
