@@ -55,11 +55,56 @@ def pretty_print(parsed):
     print(parsed['SecondLine'])
     print()
 
-def main(directory):
-    dirs = get_dirs(directory)
+
+def indent(elem, level=0):
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
+def write_file(directory, parsed):
+    xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
+    xml_file = os.path.join(directory, xml_orig)
+
+    if os.path.isfile(xml_file):
+        print(xml_file)
+        tree = xml.ElementTree(file=xml_file)
+        root = tree.getroot()
+        appSettings = root.find('appSettings')
+
+        log = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
+        val = "E:\\CPV\\{}_impexp_{}_CPV_ACTON\\EX-CPV_ACTON.log".format(parsed['Project'].upper(), parsed['Project'].lower())
+        log2 = xml.Element("add", {"key":"FixedLogName", "value":val})
+        appSettings.append(log)
+        appSettings.append(log2)
+        tree = xml.ElementTree(root)
+        indent(root)
+        tree.write(xml_file, xml_declaration=True)
+    else:
+        print('FAIL:: {} doesnt exists'.format(xml_file))
+
+def main(args):
+    abs_path = os.path.abspath(args.folder)
+
+    dirs = get_dirs(abs_path)
     for d in dirs:
         parsed_folder = parse_folder_name(d)
-        pretty_print(parsed_folder)
+        # pretty_print(parsed_folder)
+        abs_path_d = os.path.join(abs_path, d)
+
+        if(args.write):
+            if 'ARCADIA' in d:
+                print(abs_path_d)
+                write_file(abs_path_d, parsed_folder)
 
 
 
@@ -67,16 +112,22 @@ def main(directory):
 if __name__ == '__main__':
     import argparse
     import os
+    import xml.etree.ElementTree as xml
+
+    from xml.dom import minidom
+
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-f","--folder", default='C:\\CPV',
         help="the folder containing all projects and nodes")
     group.add_argument("-t","--test", action="store_true", default=False,
         help="run the doc tests")
+    parser.add_argument("-w", "--write", action="store_true", default=False,
+        help="find the xml and write the new lines to it")
     args = parser.parse_args()
 
     if(args.test):
         import doctest
         doctest.testmod()
     else:
-        main(args.folder)
+        main(args)
