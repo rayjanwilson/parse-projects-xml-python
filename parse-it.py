@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-f","--folder", default='C:\\CPV',
+    group.add_argument("-f","--folder", default='E:\\CPV',
         help="the folder containing all projects and nodes")
     group.add_argument("-t","--test", action="store_true", default=False,
         help="run the doc tests")
