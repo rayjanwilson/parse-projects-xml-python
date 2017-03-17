@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<configuration>
+  <configSections>
+  </configSections>
+  <appSettings>
+
+    <add key="Project" value="LAMETRO" />
+    <add key="Password" value="focus" />
+    <add key="Provider" value="MSDAORA" />
+    <add key="Host" value="69.134.160.30" />
+    <add key="Port" value="1521" />
+    <add key="Protocol" value="tcp" />
+    <add key="SID" value="ladg1" />
+    <add key="DatabaseInstance" value="ladg1" />
+
+    <add key="ProcessData" value="True" />
+    <add key="ProcessGraphics" value="False" />
+
+    <add key="HubProcessTextFile" value= "E:\CPV\LAMETRO_impexp_LAMETRO_CPV_ARCADIA\hubboundary.txt" />
+    <add key="NodeProcessTextFile" value="E:\CPV\LAMETRO_impexp_LAMETRO_CPV_ARCADIA\nodeboundary.txt" />
+    <add key="OtherFiles" value="E:\CPV\LAMETRO_impexp_LAMETRO\graphicsA.txt" />
+
+    <add key="HubFeatureList" value="E:\CPV\LAMETRO_impexp_LAMETRO_CPV_ARCADIA\Hub-Features.xml" />
+    <add key="NodeFeatureList" value="E:\CPV\LAMETRO_impexp_LAMETRO_CPV_ARCADIA\Node-Features.xml" />
+
+    <add key="SourceFolderFieldSpatial" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\dgn" />
+    <add key="SourceFolderFieldDUCSpatial" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\dgn" />
+    <add key="SourceFolderFieldDSPSpatial" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\dgn" />
+    <add key="DestinationFolderFieldSpatial" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\exp\CPV_ARCADIA" />
+    <add key="ExternDocFolderFieldSpatial" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\exp\CPV_ARCADIA" />
+
+    <add key="ExtractSeedFile" value="E:\WorkSpace\Projects\LAMETRO\LAMETRO\seed\dgn-seed.dgn" />
+
+    <add key="MicroStationEXEPath" value="C:\Program Files (x86)\Bentley\MapEnterprise\mapenterprise.exe" />
+
+    <add key="WorkSpaceFolder" value="E:\WorkSpace" />
+    <add key="ORACLE_DSNLESS_FORMAT" value="Driver={{Microsoft ODBC for Oracle}};Server={2};Uid={0};Pwd={1};" />
+
+  </appSettings>
+</configuration>
