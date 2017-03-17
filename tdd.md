@@ -1,11 +1,12 @@
 - looping through the directories
-  - it should default to `E:\CPV` for the processing
-  - it should not include the directories `Assemblies`, `CPV_Base_Files`, and `CPVImpExp` in it's processing
-    - it should include all other folders
+  - [x] it should default to `E:\CPV` for the processing
+  - [x] it should accept a folder as an argument
+  - [x] it should not include the directories `Assemblies`, `CPV_Base_Files`, and `CPVImpExp` in it's processing
+    - [x] it should include all other folders
 - parsing folder name
-  - it should extract the Project Name from the folder name
+  - [x] it should extract the Project Name from the folder name
     - eg) `ProjectName = LAMETRO` given a folder named `LAMETRO_impexp_lametro_CPV_ARCADIA`
-  - it should extract he Node Name from the folder name
+  - [x] it should extract he Node Name from the folder name
     - eg) `NodeName = ARCADIA` given a folder named `LAMETRO_impexp_lametro_CPV_ARCADIA`
 - writing to file within each project/node folder
   - it should open the configuration xml file
