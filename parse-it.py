@@ -13,15 +13,11 @@
 
 def parse_folder_name(folderName):
     '''
-    >>> parse_folder_name('LAMETRO_impexp_lametro_CPV_ARCADIA')
-    {'Project': 'LAMETRO', 'Node': 'ARCADIA', 'FirstLine': '<add key="UseFixedLogName" value="True" />', 'SecondLine': '<add key="FixedLogName" value="E:\\\\CPV\\\\LAMETRO_impexp_lametro_CPV_ACTON\\\\EX-CPV_ACTON.log" />'}
+    >>> parse_folder_name('/home/wilsonrm/dev/git/parse-projects-xml-python/test/folders/LAMETRO_impexp_lametro_CPV_ARCADIA')
+    {'Project': 'LAMETRO', 'Node': 'ARCADIA'}
     '''
-
     tmp = folderName.split("_")[0]
     projectName = os.path.basename(tmp)
-
-    projectNameUpper = projectName.upper()
-    projectNameLower = projectName.lower()
 
     nodeName = folderName.split('CPV_')[1]
 
@@ -40,17 +36,6 @@ def get_dirs(directory):
     mydirs = [d for d in dirs if d not in exclusionSet]
     return mydirs
 
-def pretty_print(parsed):
-    print('#'*60)
-    print()
-    print('Project:\t{}'.format(parsed['Project']))
-    print('Node:\t\t{}'.format(parsed['Node']))
-    print()
-    print(parsed['FirstLine'])
-    print(parsed['SecondLine'])
-    print()
-
-
 def indent(elem, level=0):
     i = "\n" + level*"  "
     if len(elem):
@@ -66,7 +51,8 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-def write_file(directory, parsed):
+def write_file(directory):
+    parsed = parse_folder_name(directory)
     print('Project: {}'.format(parsed['Project']))
     xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
     xml_file = os.path.join(directory, xml_orig)
@@ -104,13 +90,12 @@ def main(args):
 
     dirs = get_dirs(abs_path)
     for d in dirs:
-        parsed_folder = parse_folder_name(d)
+
         # pretty_print(parsed_folder)
         abs_path_d = os.path.join(abs_path, d)
 
         if(args.write):
-            if 'ARCADIA' in d:
-                write_file(abs_path_d, parsed_folder)
+            write_file(abs_path_d)
 
 
 
