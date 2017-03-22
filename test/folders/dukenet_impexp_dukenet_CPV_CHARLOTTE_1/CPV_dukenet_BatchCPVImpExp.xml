@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<configuration>
+  <configSections>
+  </configSections>
+  <appSettings>
+
+    <add key="Project" value="DUKENET" />
+    <add key="Password" value="focus" />
+    <add key="Provider" value="MSDAORA" />
+    <add key="Host" value="69.134.44.29" />
+    <add key="Port" value="1521" />
+    <add key="Protocol" value="tcp" />
+    <add key="SID" value="dkdg1" />
+    <add key="DatabaseInstance" value="dkdg1" /> 
+
+    <add key="ProcessData" value="True" /> 
+    <add key="ProcessGraphics" value="False" /> 
+
+    <add key="HubProcessTextFile" value= "E:\CPV\dukenet_impexp_dukenet\hubboundary.txt" />
+    <add key="NodeProcessTextFile" value="E:\CPV\dukenet_impexp_dukenet\nodeboundary.txt" />
+    <add key="OtherFiles" value="E:\CPV\dukenet_impexp_dukenet\graphicsA.txt" />
+
+    <add key="HubFeatureList" value="E:\CPV\dukenet_impexp_dukenet\Hub-Features.xml" />
+    <add key="NodeFeatureList" value="E:\CPV\dukenet_impexp_dukenet\Node-Features.xml" />
+  
+    <add key="SourceFolderFieldSpatial" value="E:\WorkSpace\Projects\dukenet\dukenet\dgn" />
+    <add key="SourceFolderFieldDUCSpatial" value="E:\WorkSpace\Projects\dukenet\dukenet\dgn" />
+    <add key="SourceFolderFieldDSPSpatial" value="E:\WorkSpace\Projects\dukenet\dukenet\dgn" />
+    <add key="DestinationFolderFieldSpatial" value="E:\WorkSpace\Projects\dukenet\dukenet\exp\dukenet" />
+    <add key="ExternDocFolderFieldSpatial" value="E:\WorkSpace\Projects\dukenet\dukenet\exp\Hub_XXXX" />
+
+    <add key="ExtractSeedFile" value="E:\WorkSpace\Projects\dukenet\dukenet\seed\Dgn_Seed.dgn" />
+
+    <add key="MicroStationEXEPath" value="C:\Program Files (x86)\Bentley\MapEnterprise\mapenterprise.exe" />
+    
+    <add key="WorkSpaceFolder" value="E:\WorkSpace" />
+    <add key="ORACLE_DSNLESS_FORMAT" value="Driver={{Microsoft ODBC for Oracle}};Server={2};Uid={0};Pwd={1};" />
+   
+  </appSettings>
+</configuration>
