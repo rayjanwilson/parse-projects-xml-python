@@ -13,7 +13,7 @@
 
 def parse_folder_name(folderName):
     '''
-    >>> parse_folder_name('/home/wilsonrm/dev/git/parse-projects-xml-python/test/folders/LAMETRO_impexp_lametro_CPV_ARCADIA')
+    >>> parse_folder_name('/parse-projects-xml-python/test/folders/LAMETRO_impexp_lametro_CPV_ARCADIA')
     {'Project': 'LAMETRO', 'Node': 'ARCADIA'}
     '''
     tmp = folderName.split("_")[0]
@@ -105,12 +105,6 @@ def process_folder(args, directory):
 
     print('#'*30 + '\n')
 
-def print_to_screen(directory):
-    parsed = parse_folder_name(directory)
-    print('Project: {}'.format(parsed['Project']))
-    print('Node: {}'.format(parsed['Node']))
-
-    print()
 
 def main(args):
     abs_path = os.path.abspath(args.folder)
