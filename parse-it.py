@@ -57,7 +57,7 @@ def process_file(xml_file, parsed):
     appSettings = root.find('appSettings')
 
     log = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
-    val = "E:\\CPV\\{}_impexp_{}_CPV_ACTON\\EX-CPV_ACTON.log".format(parsed['Project'].upper(), parsed['Project'].lower())
+    val = "E:\\CPV\\{}_impexp_{}_CPV_{}\\EX-CPV_{}.log".format(parsed['Project'].upper(), parsed['Project'].lower(), parsed['Node'], parsed['Node'])
     log2 = xml.Element("add", {"key":"FixedLogName", "value":val})
 
     should_we_append = True
