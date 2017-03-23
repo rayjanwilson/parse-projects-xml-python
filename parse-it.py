@@ -18,11 +18,16 @@ def parse_folder_name(folderName):
     '''
     tmp = folderName.split("_")[0]
     projectName = os.path.basename(tmp)
+    if projectName.startswith('TW'):
+        projectName_noTW = projectName.split('TW')[1]
+    else:
+        projectName_noTW = projectName
 
     nodeName = folderName.split('CPV_')[1]
 
     parsed = {}
     parsed['Project'] = projectName
+    parsed['ProjectNoTW'] = projectName_noTW
     parsed['Node'] = nodeName
 
     return parsed
@@ -57,7 +62,7 @@ def process_file(xml_file, parsed):
     appSettings = root.find('appSettings')
 
     log = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
-    val = "E:\\CPV\\{}_impexp_{}_CPV_{}\\EX-CPV_{}.log".format(parsed['Project'].upper(), parsed['Project'].lower(), parsed['Node'], parsed['Node'])
+    val = "E:\\CPV\\{}_impexp_{}_CPV_{}\\EX-CPV_{}.log".format(parsed['Project'], parsed['ProjectNoTW'].lower(), parsed['Node'], parsed['Node'])
     log2 = xml.Element("add", {"key":"FixedLogName", "value":val})
 
     should_we_append = True
@@ -76,7 +81,7 @@ def process_file(xml_file, parsed):
             print('\nUpdating: {}\n'.format(xml_file))
             tree.write(xml_file, xml_declaration=True)
         else:
-            print()
+            print('\nXML File: {}\n'.format(xml_file)
             xml.dump(log)
             xml.dump(log2)
     else:
@@ -88,6 +93,7 @@ def process_folder(args, directory):
     print(abs_path_d)
     parsed = parse_folder_name(abs_path_d)
     print('Project: {}'.format(parsed['Project']))
+    print('ProjectNoTW: {}'.format(parsed['ProjectNoTW']))
     print('Node: {}'.format(parsed['Node']))
 
     xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
@@ -96,10 +102,15 @@ def process_folder(args, directory):
     alt_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'].lower())
     alt_xml_file = os.path.join(abs_path_d, alt_xml_orig)
 
+    alt2_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'])
+    alt2_xml_file = os.path.join(abs_path_d, alt2_xml_orig)
+
     if os.path.isfile(xml_file):
         process_file(xml_file, parsed)
     elif(os.path.isfile(alt_xml_file)):
         process_file(alt_xml_file, parsed)
+    elif(os.path.isfile(alt2_xml_file)):
+        process_file(alt2_xml_file, parsed)
     else:
         print('\nFAIL:: {} doesnt exist\n'.format(xml_file))
 

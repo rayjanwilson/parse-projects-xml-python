@@ -28,6 +28,9 @@ if __name__ == '__main__':
         example_file_name = ''
         if 'dukenet' in d:
             example_file_name = 'CPV_dukenet_BatchCPVImpExp.xml'
+        elif d.startswith('TW'):
+            print(d)
+            example_file_name = 'CPV_TWLAMETRO_BatchCPVImpExp.xml'
         else:
             example_file_name = 'CPV_lametro_batchCPVimpexp.xml'
         src = os.path.join(example_file_loc, example_file_name)
