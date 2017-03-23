@@ -81,21 +81,13 @@ def process_file(xml_file, parsed):
             print('\nUpdating: {}\n'.format(xml_file))
             tree.write(xml_file, xml_declaration=True)
         else:
-            print('\nXML File: {}\n'.format(xml_file)
+            print('\nXML File: {}\n'.format(xml_file))
             xml.dump(log)
             xml.dump(log2)
     else:
         print('\nSkipping: {}\n'.format(xml_file))
 
-def process_folder(args, directory):
-    abs_path = os.path.abspath(args.folder)
-    abs_path_d = os.path.join(abs_path, directory)
-    print(abs_path_d)
-    parsed = parse_folder_name(abs_path_d)
-    print('Project: {}'.format(parsed['Project']))
-    print('ProjectNoTW: {}'.format(parsed['ProjectNoTW']))
-    print('Node: {}'.format(parsed['Node']))
-
+def get_xml_name(abs_path_d, parsed):
     xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
     xml_file = os.path.join(abs_path_d, xml_orig)
 
@@ -106,11 +98,27 @@ def process_folder(args, directory):
     alt2_xml_file = os.path.join(abs_path_d, alt2_xml_orig)
 
     if os.path.isfile(xml_file):
-        process_file(xml_file, parsed)
+        return xml_file
     elif(os.path.isfile(alt_xml_file)):
-        process_file(alt_xml_file, parsed)
+        return alt_xml_file
     elif(os.path.isfile(alt2_xml_file)):
-        process_file(alt2_xml_file, parsed)
+        return alt2_xml_file
+    else:
+        return None
+
+def process_folder(args, directory):
+    abs_path = os.path.abspath(args.folder)
+    abs_path_d = os.path.join(abs_path, directory)
+    print(abs_path_d)
+    parsed = parse_folder_name(abs_path_d)
+    print('Project: {}'.format(parsed['Project']))
+    print('ProjectNoTW: {}'.format(parsed['ProjectNoTW']))
+    print('Node: {}'.format(parsed['Node']))
+
+    xml_file = get_xml_name(abs_path_d, parsed)
+
+    if xml_file:
+        process_file(xml_file, parsed)
     else:
         print('\nFAIL:: {} doesnt exist\n'.format(xml_file))
 
