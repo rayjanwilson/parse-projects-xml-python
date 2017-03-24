@@ -4,17 +4,7 @@ from shutil import copyfile
 import os
 
 def get_dirs(directory):
-    exclusionFolders = ['Assemblies', 'CPV_Base_Files', 'CPVImpExp',
-        'twckc_impexp_twckc',
-        'twkiwi_impexp_twkiwi',
-        'twcolu_impexp_twcolu',
-        'twckc_impexp_twckc',
-        'twlin_impexp_CPV',
-        'TWNTX_impexp_TWNTX',
-        'TWSCAL_impexp_twscal',
-        'twsoh_impexp_twsoh',
-        'TWSTX_impexp_TWSTX',
-        'twwisc_impexp_twwisc']
+    exclusionFolders = ['Assemblies', 'CPV_Base_Files', 'CPVImpExp']
     exclusionSet = set(exclusionFolders)
 
     dirs = [d for d in os.listdir(directory)]

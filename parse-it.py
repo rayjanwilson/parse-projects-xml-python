@@ -39,7 +39,17 @@ def get_dirs(directory):
         'TWBQ_impexp_twbq',
         'TWCAL_impexp_twcal',
         'TWCLT_impexp_twclt',
-        'TWCNE_impexp_TWCNE']
+        'TWCNE_impexp_TWCNE',
+        'twckc_impexp_twckc',
+        'twkiwi_impexp_twkiwi',
+        'twcolu_impexp_twcolu',
+        'twckc_impexp_twckc',
+        'twlin_impexp_CPV',
+        'TWNTX_impexp_TWNTX',
+        'TWSCAL_impexp_twscal',
+        'twsoh_impexp_twsoh',
+        'TWSTX_impexp_TWSTX',
+        'twwisc_impexp_twwisc']
     exclusionSet = set(exclusionFolders)
 
     dirs = [d for d in os.listdir(directory) if os.path.isdir( os.path.join(directory,d))]
