@@ -34,22 +34,7 @@ def parse_folder_name(folderName):
 
 def get_dirs(directory):
     exclusionFolders = [
-        'Assemblies', 'CPV_Base_Files', 'CPVImpExp', 'wintail', 'imp_exp_upd', 'dukenet_impexp_dukenet',
-        'scarolina_impexp_scarolina',
-        'TWBQ_impexp_twbq',
-        'TWCAL_impexp_twcal',
-        'TWCLT_impexp_twclt',
-        'TWCNE_impexp_TWCNE',
-        'twckc_impexp_twckc',
-        'twkiwi_impexp_twkiwi',
-        'twcolu_impexp_twcolu',
-        'twckc_impexp_twckc',
-        'twlin_impexp_CPV',
-        'TWNTX_impexp_TWNTX',
-        'TWSCAL_impexp_twscal',
-        'twsoh_impexp_twsoh',
-        'TWSTX_impexp_TWSTX',
-        'twwisc_impexp_twwisc']
+        'Assemblies', 'CPV_Base_Files', 'CPVImpExp', 'wintail', 'imp_exp_upd']
     exclusionSet = set(exclusionFolders)
 
     dirs = [d for d in os.listdir(directory) if os.path.isdir( os.path.join(directory,d))]
@@ -180,7 +165,8 @@ def main(args):
             failed_dirs.append(d)
     with open('failed_dirs', 'w') as f:
         for d in failed_dirs:
-            f.write('{}\n'.format(d))
+            abs_path_d = os.path.join(abs_path, d)
+            f.write('{}\n'.format(abs_path_d))
 
 
 if __name__ == '__main__':
