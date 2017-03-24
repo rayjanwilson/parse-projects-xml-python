@@ -171,8 +171,16 @@ def main(args):
     abs_path = os.path.abspath(args.folder)
 
     dirs = get_dirs(abs_path)
+    failed_dirs = []
     for d in dirs:
-        process_folder(args, d)
+        try:
+            process_folder(args, d)
+        except:
+            print('Couldnt process the folder {}'.format(d))
+            failed_dirs.append(d)
+    with open('failed_dirs', 'w') as f:
+        for d in failed_dirs:
+            f.write('{}\n'.format(d))
 
 
 if __name__ == '__main__':
