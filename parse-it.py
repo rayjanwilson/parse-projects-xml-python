@@ -93,6 +93,28 @@ def process_file(xml_file, parsed):
     else:
         print('\nSkipping: {}\n'.format(xml_file))
 
+def choose_xml(abs_path_d):
+    xml_list = [f for f in os.listdir(abs_path_d) if f.endswith('.xml')]
+    xml_file = ''
+    while True:
+        for number, filename in enumerate(xml_list):
+            print(number, filename)
+
+        try:
+            P1 = int(input("\nSelect the xml file: "))
+        except ValueError:
+            print('\nPlease enter an integer')
+            continue
+
+        if P1 < 0 or P1 >= len(xml_list):
+            print('\nPlease enter an integer listed')
+            continue
+        else:
+            xml_file = os.path.join(abs_path_d, xml_list[P1])
+            break
+
+    return xml_file
+
 def get_xml_name(abs_path_d, parsed):
     xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
     xml_file = os.path.join(abs_path_d, xml_orig)
@@ -110,7 +132,11 @@ def get_xml_name(abs_path_d, parsed):
     elif(os.path.isfile(alt2_xml_file)):
         return alt2_xml_file
     else:
-        return None
+        print()
+        print("Unable to auto-detect the xml file")
+        print("Choose from the xmls present in {}\n".format(os.path.basename(abs_path_d)))
+        choosen_xml = choose_xml(abs_path_d)
+        return choosen_xml
 
 def process_folder(args, directory):
     abs_path = os.path.abspath(args.folder)
