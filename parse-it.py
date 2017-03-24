@@ -33,8 +33,7 @@ def parse_folder_name(folderName):
     return parsed
 
 def get_dirs(directory):
-    exclusionFolders = [
-        'Assemblies', 'CPV_Base_Files', 'CPVImpExp', 'wintail', 'imp_exp_upd']
+    exclusionFolders = ['Assemblies', 'CPV_Base_Files', 'CPVImpExp', 'wintail', 'imp_exp_upd']
     exclusionSet = set(exclusionFolders)
 
     dirs = [d for d in os.listdir(directory) if os.path.isdir( os.path.join(directory,d))]
