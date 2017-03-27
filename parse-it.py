@@ -162,7 +162,7 @@ def main(args):
         except:
             print('Couldnt process the folder {}'.format(d))
             failed_dirs.append(d)
-    with open('failed_dirs', 'w') as f:
+    with open('failed_dirs.txt', 'w') as f:
         for d in failed_dirs:
             abs_path_d = os.path.join(abs_path, d)
             f.write('{}\n'.format(abs_path_d))
