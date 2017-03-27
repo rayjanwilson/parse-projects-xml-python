@@ -56,14 +56,17 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-def process_file(xml_file, parsed):
+def process_file(xml_file, parsed, args):
     tree = xml.ElementTree(file=xml_file)
     root = tree.getroot()
     appSettings = root.find('appSettings')
 
+    directory = os.path.dirname(xml_file)
+    log_file = "EX-CPV_{}.log".format(parsed['Node'])
+    abs_log_file_name = os.path.join(directory, log_file)
+
     log = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
-    val = "E:\\CPV\\{}_impexp_{}_CPV_{}\\EX-CPV_{}.log".format(parsed['Project'], parsed['ProjectNoTW'].lower(), parsed['Node'], parsed['Node'])
-    log2 = xml.Element("add", {"key":"FixedLogName", "value":val})
+    log2 = xml.Element("add", {"key":"FixedLogName", "value":abs_log_file_name})
 
     should_we_append = True
 
@@ -144,7 +147,7 @@ def process_folder(args, directory):
     xml_file = get_xml_name(abs_path_d, parsed)
 
     if xml_file:
-        process_file(xml_file, parsed)
+        process_file(xml_file, parsed, args)
     else:
         print('\nFAIL:: {} doesnt exist\n'.format(xml_file))
 
@@ -167,7 +170,6 @@ def main(args):
             abs_path_d = os.path.join(abs_path, d)
             f.write('{}\n'.format(abs_path_d))
 
-
 if __name__ == '__main__':
     import argparse
     import os
@@ -183,6 +185,8 @@ if __name__ == '__main__':
         help="run the doc tests")
     parser.add_argument("-w", "--write", action="store_true", default=False,
         help="find the xml and write the new lines to it")
+    parser.add_argument("-e", "--edit", action="store_true", default=False,
+        help="edit existing FixedLogName entries")
     args = parser.parse_args()
 
     if(args.test):
