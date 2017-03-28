@@ -56,6 +56,14 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
+def does_element_exist(appSettings, element):
+    is_it_there = False
+    for child in appSettings:
+        if child.attrib['key'] == element.attrib['key']:
+            is_it_there = True
+    return is_it_there
+
+
 def process_file(xml_file, parsed, args):
     tree = xml.ElementTree(file=xml_file)
     root = tree.getroot()
@@ -65,30 +73,52 @@ def process_file(xml_file, parsed, args):
     log_file = "EX-CPV_{}.log".format(parsed['Node'])
     abs_log_file_name = os.path.join(directory, log_file)
 
-    log = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
-    log2 = xml.Element("add", {"key":"FixedLogName", "value":abs_log_file_name})
-
-    should_we_append = True
+    element_1 = xml.Element("add", {"key":"UseFixedLogName", "value":"True"})
+    element_2 = xml.Element("add", {"key":"FixedLogName", "value":abs_log_file_name})
 
     # check to see if the attribute is already there for some reason
-    for child in appSettings:
-        if child.attrib == log.attrib:
-            should_we_append = False
+    element_1_present = does_element_exist(appSettings, element_1)
+    element_2_present = does_element_exist(appSettings, element_2)
 
-    if should_we_append:
-        appSettings.append(log)
-        appSettings.append(log2)
-        tree = xml.ElementTree(root)
-        indent(root)
-        if(args.write):
-            print('\nUpdating: {}\n'.format(xml_file))
-            tree.write(xml_file, xml_declaration=True)
-        else:
-            print('\nXML File: {}\n'.format(xml_file))
-            xml.dump(log)
-            xml.dump(log2)
+    if element_1_present or element_2_present:
+        print('This file may have been edited')
+        all_elements = list(appSettings)
+        for item in all_elements:
+            if item.attrib['key'] == element_1.attrib['key']:
+                print('Found {}'.format(item.attrib['key']))
+                print('\tOrig: {}'.format(item.attrib['value']))
+                print('\tNew: {}'.format(element_1.attrib['value']))
+                if args.edit:
+                    item.attrib['value'] = element_1.attrib['value']
+
+            if item.attrib['key'] == element_2.attrib['key']:
+                print('Found {}'.format(item.attrib['key']))
+                print('\tOrig: {}'.format(item.attrib['value']))
+                print('\tNew:  {}'.format(element_2.attrib['value']))
+                if args.edit:
+                    item.attrib['value'] = element_2.attrib['value']
+
+        if not args.edit:
+            print('\nNot performing the edit. Use -e to edit this file')
+            print('Skipping')
     else:
-        print('\nSkipping: {}\n'.format(xml_file))
+        print('Looks like this hasnt been touched')
+        appSettings.append(element_1)
+        appSettings.append(element_2)
+
+    tree = xml.ElementTree(root)
+    indent(root)
+    if(args.write):
+        print()
+        print('Updating: {}\n'.format(xml_file))
+        tree.write(xml_file, xml_declaration=True)
+    else:
+        print()
+        print('Dry-Run. Use -w to write the file\n')
+        print('This is what would be added:\n')
+        xml.dump(element_1)
+        xml.dump(element_2)
+        print()
 
 def choose_xml(abs_path_d):
     xml_list = [f for f in os.listdir(abs_path_d) if f.endswith('.xml')]
@@ -140,11 +170,12 @@ def process_folder(args, directory):
     abs_path_d = os.path.join(abs_path, directory)
     print(abs_path_d)
     parsed = parse_folder_name(abs_path_d)
-    print('Project: {}'.format(parsed['Project']))
-    print('ProjectNoTW: {}'.format(parsed['ProjectNoTW']))
-    print('Node: {}'.format(parsed['Node']))
+    print('Project:\t{}'.format(parsed['Project']))
+    print('ProjectNoTW:\t{}'.format(parsed['ProjectNoTW']))
+    print('Node:\t\t{}\n'.format(parsed['Node']))
 
     xml_file = get_xml_name(abs_path_d, parsed)
+    print('Selected XML File:\n{}\n'.format(xml_file))
 
     if xml_file:
         process_file(xml_file, parsed, args)
@@ -162,8 +193,9 @@ def main(args):
     for d in dirs:
         try:
             process_folder(args, d)
-        except:
+        except Exception as e:
             print('Couldnt process the folder {}'.format(d))
+            print(e)
             failed_dirs.append(d)
     with open('failed_dirs.txt', 'w') as f:
         for d in failed_dirs:
