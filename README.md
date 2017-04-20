@@ -12,6 +12,9 @@
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 ```
+- `source ~/.bashrc`
+- `mkvirtualenv parse -p python3`
+
 
 ### Project Notes
 Where all the projects reside -
