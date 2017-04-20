@@ -1,5 +1,19 @@
 ## Parse the projects with Python
 
+### Setup Python3 virtualenv
+- `wget https://bootstrap.pypa.io/get-pip.py`
+- `sudo python get-pip.py`
+- `sudo pip install virtualenv virtualenvwrapper`
+
+- edit ~/.bashrc
+
+```bashrc
+# virtualenv and virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+```
+
+### Project Notes
 Where all the projects reside -
 E:\CPV
 
