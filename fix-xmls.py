@@ -83,6 +83,8 @@ def match_xml(files):
 
 def get_xml_name(abs_path_d, parsed):
     files = get_files(abs_path_d)
+    print('Files:')
+    print(files)
 
     xml_file = os.path.join(abs_path_d, match_xml(files))
     # xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
