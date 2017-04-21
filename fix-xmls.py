@@ -18,6 +18,7 @@ def parse_folder_name(folderName):
     parsed['Project'] = projectName
     parsed['ProjectNoTW'] = projectName_noTW
     parsed['Node'] = nodeName
+    parsed['Folder'] = folderName
 
     return parsed
 
@@ -33,9 +34,14 @@ def get_dirs(directory):
 def process_file(xml_file, parsed, args):
     with fileinput.input(xml_file, inplace=True) as f:
         for line in f:
-            if('FixedLogName' in line):
-                newline = re.sub(r'\_impexp_\w+\_CPV', '_impexp_CPV', line)
-                print(newline.rstrip())
+            if('key="FixedLogName"' in line):
+                m = re.search(r'value\=\"(\S+)[\\\/](\S+\.log)\"', line)
+                oldFolder = m.group(1)
+                log = m.group(2)
+                newlog = os.sep.join([parsed['Folder'], log])
+                newvalue = ''.join(['value="',newlog,'"'])
+                newLineFolder = re.sub(r'value\=\"\S+\.log\"', newvalue, line)
+                print(newLineFolder.rstrip())
             else:
                 print(line.rstrip())
 
@@ -87,11 +93,12 @@ def get_xml_name(abs_path_d, parsed):
 def process_folder(args, directory):
     abs_path = os.path.abspath(args.folder)
     abs_path_d = os.path.join(abs_path, directory)
-    print(abs_path_d)
+
     parsed = parse_folder_name(abs_path_d)
     print('Project:\t{}'.format(parsed['Project']))
     print('ProjectNoTW:\t{}'.format(parsed['ProjectNoTW']))
-    print('Node:\t\t{}\n'.format(parsed['Node']))
+    print('Node:\t\t{}'.format(parsed['Node']))
+    print('Folder:\t\t{}\n'.format(parsed['Folder']))
 
     xml_file = get_xml_name(abs_path_d, parsed)
     print('Selected XML File:\n{}\n'.format(xml_file))
