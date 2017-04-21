@@ -31,6 +31,10 @@ def get_dirs(directory):
     mydirs = [d for d in dirs if (d not in exclusionSet)]
     return mydirs
 
+def get_files(directory):
+    files = [f for f in os.listdir(directory) if os.path.isfile( os.path.join(directory,f) )]
+    return files
+
 def process_file(xml_file, parsed, args):
     with fileinput.input(xml_file, inplace=True) as f:
         for line in f:
@@ -67,22 +71,31 @@ def choose_xml(abs_path_d):
 
     return xml_file
 
+def match_xml(files):
+    xml_file = ''
+    for f in files:
+        result = re.match(r'(CPV_\w+_BatchCPVImpExp\.xml)', f, flags=re.IGNORECASE)
+        if(result):
+            xml_file = result.group(1)
+    print('auto selected:')
+    print(xml_file)
+    return xml_file
+
 def get_xml_name(abs_path_d, parsed):
-    xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
-    xml_file = os.path.join(abs_path_d, xml_orig)
+    files = get_files(abs_path_d)
 
-    alt_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'].lower())
-    alt_xml_file = os.path.join(abs_path_d, alt_xml_orig)
-
-    alt2_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'])
-    alt2_xml_file = os.path.join(abs_path_d, alt2_xml_orig)
+    xml_file = os.path.join(abs_path_d, match_xml(files))
+    # xml_orig = 'CPV_{}_batchCPVimpexp.xml'.format(parsed['Project'].lower())
+    # xml_file = os.path.join(abs_path_d, xml_orig)
+    #
+    # alt_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'].lower())
+    # alt_xml_file = os.path.join(abs_path_d, alt_xml_orig)
+    #
+    # alt2_xml_orig = 'CPV_{}_BatchCPVImpExp.xml'.format(parsed['Project'])
+    # alt2_xml_file = os.path.join(abs_path_d, alt2_xml_orig)
 
     if os.path.isfile(xml_file):
         return xml_file
-    elif(os.path.isfile(alt_xml_file)):
-        return alt_xml_file
-    elif(os.path.isfile(alt2_xml_file)):
-        return alt2_xml_file
     else:
         print()
         print("Unable to auto-detect the xml file")
